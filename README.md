@@ -1,5 +1,5 @@
 # DominicanID
 
 
-I use an api to create this simple proyect where i receive an dominian ID 
-and give back all date related with the ID number.
+I use an api to create this simple proyect where I receive a dominian ID 
+and give back all datas related with the ID number.
