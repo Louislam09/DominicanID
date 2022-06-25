@@ -13,7 +13,7 @@
   "author": "Luis Martinez",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "open": "^7.0.2"
   }
 }
