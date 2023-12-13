@@ -36,7 +36,9 @@ function calculateUserAge(birthMonth, birthDay, birthYear) {
 
 async function getUserData() {
   try {
-    const { status, result } = await fetchUserDataByID({ id: inputID.value });
+    const { status, result } = await fetchUserDataByID({
+      id: inputID.value.replaceAll("-", ""),
+    });
 
     if (!status) {
       throw new Error("User Not Found");
