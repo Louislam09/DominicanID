@@ -1,77 +1,62 @@
-// const fetch = require('node-fetch');
+import { API_URL, PROFILE_IMAGES } from './config/index.js';
 
-// DOM
-var btn = document.getElementById('btn');
-var inputID = document.getElementById('inputID');
-var username = document.getElementById('username');
-var lastname = document.getElementById('lastname');
-var birth = document.getElementById('birth');
-var from = document.getElementById('from');
-var id = document.getElementById('id');
-var photo = document.getElementById('img');
-var age = document.getElementById('age');
+const apiKey = API_URL;
 
-async function getData(id) {
-	const url = `http://173.249.49.169:88/api/test/consulta/${id}`;
-	const res = await fetch(url);
-	const json = await res.json();
+const btn = document.getElementById('btn');
+const cardDiv = document.getElementById('card');
+const inputID = document.getElementById('inputID');
+const username = document.getElementById('username');
+const lastname = document.getElementById('lastname');
+const birthDiv = document.getElementById('birth');
+const from = document.getElementById('from');
+const idElement = document.getElementById('id');
+const photo = document.getElementById('img');
+const ageElement = document.getElementById('age');
 
-	if (res.status !== 200) throw Error(`This ID ${id} do not exist`);
-	return json;
+async function fetchUserDataByID({ id }) {
+    const url = `${apiKey}/${id}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Error fetching data for ID ${id}: ${response.statusText}`);
+    }
+
+    return response.json();
 }
 
-async function search() {
-	try {
-		const info = await getData(inputID.value);
-		var data = {
-			name: info.Nombres,
-			Lastname1: info.Apellido1,
-			Lastname2: info.Apellido2,
-			birth: info.FechaNacimiento,
-			source: info.LugarNacimiento,
-			img: info.Foto,
-			id: info.Cedula
+function calculateUserAge(birthMonth, birthDay, birthYear) {
+    const today = new Date();
+    const age = today.getFullYear() - birthYear - (today.getMonth() < birthMonth - 1 || (today.getMonth() === birthMonth - 1 && today.getDate() < birthDay));
+    return age;
+}
+
+async function getUserData() {
+    try {
+        const { status, result } = await fetchUserDataByID({ id: inputID.value });
+
+        if (!status) {
+			throw new Error('User Not Found')
 		};
 
-		data.birth.substr(0);
+        const { nombres: name, cedula: id, apellido1: lastName1, apellido2: lastName2, fechaNacimiento: birth, lugarNacimiento: source, sexoId } = result;
+		const profileImage = PROFILE_IMAGES[sexoId]
 
-		username.innerHTML = `Nombre:  ${data.name}`;
-		lastname.innerHTML = `Apellido: ${data.Lastname1 + ' ' + data.Lastname2}`;
-		birth.innerHTML = `Fecha Nacimiento: ${data.birth.substr(0, 10)}`;
-		from.innerHTML = `Lugar Nacimiento: ${data.source}`;
-		id.innerHTML = `Cedula: ${data.id}`;
-		photo.src = data.img;
+        const birthDate = birth.substr(0, 10);
 
-		var values = data.birth.substr(0, 10).split('-');
-		var dia = values[2];
-		var mes = values[1];
-		var ano = values[0];
+        username.innerHTML = `Nombre:  ${name}`;
+        lastname.innerHTML = `Apellido: ${lastName1} ${lastName2}`;
+        birthDiv.innerHTML = `Fecha Nacimiento: ${birthDate}`;
+        from.innerHTML = `Lugar Nacimiento: ${source}`;
+        idElement.innerHTML = `Cedula: ${id}`;
+        photo.src = profileImage;
 
-		age.innerText = `Edad: ${calculate_age(mes, dia, ano)} años`;
+        const [year, month, day] = birthDate.split('-');
+        ageElement.innerText = `Edad: ${calculateUserAge(month, day, year)} años`;
 
-		function calculate_age(birth_month, birth_day, birth_year) {
-			today_date = new Date();
-			today_year = today_date.getFullYear();
-			today_month = today_date.getMonth();
-			today_day = today_date.getDate();
-			age = today_year - birth_year;
-
-			if (today_month < birth_month - 1) {
-				age--;
-			}
-			if (birth_month - 1 == today_month && today_day < birth_day) {
-				age--;
-			}
-			return age;
-		}
-
-		console.log(data);
-	} catch (e) {
-		alert(`Posible errores: \n 
-                1) La Cedula No Existe.\n
-                2) No Tiene Conexion.`);
-		console.log(e);
-	}
+    } catch (error) {
+		alert(error.message)
+        console.error(error);
+    }
 }
 
-btn.onclick = search;
+btn.addEventListener('click', getUserData)

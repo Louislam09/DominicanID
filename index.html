@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>User Information App - DR</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="config/index.js" defer></script>
+    <script type="module" src="index.js" defer></script>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Information From ID</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-    <div class="container">
+  <body>
+    <main class="container">
+      <header>
         <h1>USER INFORMATION</h1>
-        <br>
-
-        <div class="data" id="data">
-            <img id="img" class="img" width="150">
-            <br>
-            <label for="name" id="username"></label>
-            <label for="lastname" id="lastname"></label>
-            <label for="birth" id="birth"></label>
-            <label for="from" id="from"></label>
-            <label for="id" id="id"></label>
-            <label for="age" id="age"></label>
+      </header>
+      <section class="card" id="card">
+        <img id="img" class="img" width="150" />
+        <div class="info">
+          <span id="username"></span>
+          <span id="lastname"></span>
+          <span id="birth"></span>
+          <span id="from"></span>
+          <span id="id"></span>
+          <span id="age"></span>
         </div>
-        <br>
-
-        <input type="text" class="input-id" id="inputID" placeholder="Write Your ID Number" autofocus>
+      </section>
+      <section class="search-wrapper">
+        <input
+          value="40200497580"
+          type="text"
+          class="input-id"
+          id="inputID"
+          placeholder="Write Your ID Number"
+          autofocus
+        />
         <button class="btn" id="btn">Search</button>
-    </div>
-
-    <script src="index.js"></script>
-</body>
-
+      </section>
+    </main>
+  </body>
 </html>
