@@ -37,7 +37,7 @@ function calculateUserAge(birthMonth, birthDay, birthYear) {
 async function getUserData() {
   try {
     const { status, result } = await fetchUserDataByID({
-      id: inputID.value.replaceAll("-", ""),
+      id: inputID.value.replaceAll("-", "").trim(),
     });
 
     if (!status) {
