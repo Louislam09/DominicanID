@@ -4,6 +4,7 @@ const apiKey = API_URL;
 const randomRobotImageUrl = `https://robohash.org`;
 
 const cardDiv = document.getElementById("card");
+const loadingDiv = document.getElementById("loading");
 const btn = document.getElementById("btn");
 const inputID = document.getElementById("inputID");
 const username = document.getElementById("username");
@@ -15,6 +16,7 @@ const photo = document.getElementById("img");
 const ageElement = document.getElementById("age");
 
 async function fetchUserDataByID({ id }) {
+  hideAndShow({ element: loadingDiv })
   const url = `${apiKey}/user/${id}`;
   const response = await fetch(url);
 
@@ -35,16 +37,6 @@ function calculateUserAge(birthMonth, birthDay, birthYear) {
   return age;
 }
 
-function loading() {
-  username.innerHTML = `loading...`;
-  lastname.innerHTML = `loading...`;
-  birthDiv.innerHTML = `loading...`;
-  from.innerHTML = `loading...`;
-  idElement.innerHTML = `loading...`;
-  photo.src = "";
-  ageElement.innerText = `loading...`;
-}
-
 function hideAndShow({ element, shouldDisplay = true }) {
   if (shouldDisplay) {
     element.style.display = ''
@@ -53,9 +45,13 @@ function hideAndShow({ element, shouldDisplay = true }) {
   element.style.display = 'none'
 }
 
+hideAndShow({ element: cardDiv, shouldDisplay: false })
+hideAndShow({ element: loadingDiv, shouldDisplay: false })
+
 async function getUserData() {
   try {
     hideAndShow({ element: cardDiv, shouldDisplay: false })
+    if (!inputID.value.replaceAll("-", "").trim()) return
     const { status, result } = await fetchUserDataByID({
       id: inputID.value.replaceAll("-", "").trim(),
     });
@@ -64,6 +60,7 @@ async function getUserData() {
       throw new Error("User Not Found");
     }
 
+    hideAndShow({ element: loadingDiv, shouldDisplay: false })
     hideAndShow({ element: cardDiv })
     const {
       nombres: name,
@@ -86,6 +83,7 @@ async function getUserData() {
     const [year, month, day] = birthDate.split("-");
     ageElement.innerText = `Edad: ${calculateUserAge(month, day, year)} años`;
   } catch (error) {
+    hideAndShow({ element: loadingDiv, shouldDisplay: false })
     alert(error.message);
     console.error(error);
   }

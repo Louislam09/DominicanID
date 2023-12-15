@@ -19,13 +19,20 @@ h1 {
   color: #333;
 }
 
-.card {
+.card,
+.loading {
   display: flex;
   align-items: center;
   text-align: left;
   padding: 20px;
   background-color: #f0f0f0;
   border-radius: 8px;
+  margin-bottom: 5px;
+  justify-content: center;
+}
+
+.loading {
+  padding: 5px;
 }
 
 .img {
