@@ -34,8 +34,19 @@ function calculateUserAge(birthMonth, birthDay, birthYear) {
   return age;
 }
 
+function loading() {
+  username.innerHTML = `loading...`;
+  lastname.innerHTML = `loading...`;
+  birthDiv.innerHTML = `loading...`;
+  from.innerHTML = `loading...`;
+  idElement.innerHTML = `loading...`;
+  photo.src = "";
+  ageElement.innerText = `loading...`;
+}
+
 async function getUserData() {
   try {
+    loading();
     const { status, result } = await fetchUserDataByID({
       id: inputID.value.replaceAll("-", "").trim(),
     });

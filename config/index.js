@@ -1,1 +1,1 @@
-export const API_URL = "https://servicios.mirex.gob.do/proxy/api/padron";
+export const API_URL = "https://dominican-api.onrender.com";
