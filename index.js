@@ -3,6 +3,7 @@ import { API_URL } from "./config/index.js";
 const apiKey = API_URL;
 const randomRobotImageUrl = `https://robohash.org`;
 
+const cardDiv = document.getElementById("card");
 const btn = document.getElementById("btn");
 const inputID = document.getElementById("inputID");
 const username = document.getElementById("username");
@@ -44,9 +45,17 @@ function loading() {
   ageElement.innerText = `loading...`;
 }
 
+function hideAndShow({ element, shouldDisplay = true }) {
+  if (shouldDisplay) {
+    element.style.display = ''
+    return
+  }
+  element.style.display = 'none'
+}
+
 async function getUserData() {
   try {
-    loading();
+    hideAndShow({ element: cardDiv, shouldDisplay: false })
     const { status, result } = await fetchUserDataByID({
       id: inputID.value.replaceAll("-", "").trim(),
     });
@@ -55,6 +64,7 @@ async function getUserData() {
       throw new Error("User Not Found");
     }
 
+    hideAndShow({ element: cardDiv })
     const {
       nombres: name,
       cedula: id,
