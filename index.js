@@ -14,7 +14,7 @@ const photo = document.getElementById("img");
 const ageElement = document.getElementById("age");
 
 async function fetchUserDataByID({ id }) {
-  const url = `${apiKey}/${id}`;
+  const url = `${apiKey}/user/${id}`;
   const response = await fetch(url);
 
   if (!response.ok) {
